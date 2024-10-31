@@ -47,6 +47,12 @@ body{
     border-radius: 50%;
     background-color: black;
     box-shadow: 0 00 10px rgba(255, 255, 255, 0.6);
+    animation: rotate 20s linear infinite;
+    animation-play-state: paused;
+}
+
+.disk.play{
+    animation-play-state:run ;
 }
 
 .disk::before{
@@ -93,9 +99,9 @@ body{
 }
 
 .controls{
-    width: 100%;
+    width: 60%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin: auto;
     margin-top: 20px;
@@ -121,6 +127,7 @@ body{
     border-radius: 2px;
     background: #5f7a61;
     transition: 0.5s;
+    /*clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);*/
 }
 
 .play-btn span:nth-child(2){
@@ -130,5 +137,58 @@ body{
 
 .play-btn.pause span:nth-child(2){
     transform: rotateY(-50%) scaleY(0);
+}
+
+.play-btn.pause span:nth-child(1){
+    width: 40%;
+    left: 55%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0%;
+   clip-path: polygon(0 0, 100% 48%, 100% 48%, 0% 100%);
+}
+
+.play-btn.pause span:nth-child(2) {
+    display: none;
+}
+
+.play-btn.pause{
+    animation: pulse 2s linear infinite;
+}
+
+@keyframes pulse{
+    0%{
+        box-shadow: 0;
+    }
+    50%{
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+    100%{
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.4);
+    }
+}
+
+img{
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    transform: scale(2);
+    background: #d5eebb;
+    cursor: pointer;
+}
+
+
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0);
+    }
+    100%{
+        transform: rotate(300deg);
+    }
 }
 
