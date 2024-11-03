@@ -1,4 +1,10 @@
 let currentMusic = 0;
+const songs =[
+    {path:"/WhatsApp Audio 2024-10-31 at 16.54.39_eb4de9ee.mp3", name:"A whole new World", artist: "Peabo Bryson and Regina Belle"},
+    {path:"/WhatsApp Audio 2024-11-03 at 12.26.12_3694c508.mp3", name:"Until I found you", artist: "Stephen Sanchez"},
+    {path:"/WhatsApp Audio 2024-11-03 at 12.26.13_20f9359e.mp3", name:"Sweet Caroline", artist: "Neil Diamond"},
+    {path:"/WhatsApp Audio 2024-11-03 at 12.26.13_74ed5633.mp3", name:"I think they call this love", artist: "Elliot James Reay"}
+];
 const music = document.querySelector("#audio");
 const seekBar = document.querySelector(".seek-bar");
 const songName = document.querySelector(".music-name");
@@ -10,88 +16,71 @@ const playBtn = document.querySelector(".play-btn");
 const forwardBtn = document.querySelector(".forward-btn");
 const backwardBtn = document.querySelector(".backward-btn");
 
-playBtn.addEventListener("click", () =>{
-    if(playBtn.className.includes("pause")){
-        music.play();
-    }else{
-        music.pause();
+// Load song
+const loadSong = (index) => {
+    audio.src = songs[index].path;
+    songName.textContent = songs[index].name;
+    artistName.textContent = songs[index].artist;
+    audio.load();
+};
+
+// Play song
+const playSong = () => {
+    audio.play();
+    playBtn.classList.remove("pause");
+};
+
+// Pause song
+const pauseSong = () => {
+    audio.pause();
+    playBtn.classList.add("pause");
+};
+
+// Toggle play/pause
+playBtn.addEventListener("click", () => {
+    if (audio.paused) {
+        playSong();
+    } else {
+        pauseSong();
     }
-    
-    playBtn.classList.toggle("pause");
-    disk.classList.toggle("play");
-    
-})
+});
 
-/*const setMusic = (i) => {
-    seekBar.value = 0;//set range slide value to 0
-    let song = songs[i];
-    currentMusic = i;
-    music.src = song.path;
+// Next song
+const nextSong = () => {
+    currentMusic = (currentMusic + 1) % songs.length;
+    loadSong(currentMusic);
+    playSong();
+};
 
-    songName.innerHTML = song.name;
-    artistName.innerHTML = song.artist;
-    disk.style.backgroundImage = `url("${song.cover}")`;
+// Previous song
+const prevSong = () => {
+    currentMusic = (currentMusic - 1 + songs.length) % songs.length;
+    loadSong(currentMusic);
+    playSong();
+};
 
-    currentTime.innerHTML = "00:00";
-    setTimeout(() => {
-    seekBar.max = music.duration;
-    musicDuration.innerHTML = formatTime(music.duration);
-    }, 300);
+// Forward and backward button functionality
+forwardBtn.addEventListener("click", nextSong);
+backwardBtn.addEventListener("click", prevSong);
 
-}
+// Update seek bar and time
+audio.addEventListener("timeupdate", () => {
+    seekBar.value = audio.currentTime;
+    currentTime.textContent = formatTime(audio.currentTime);
+    musicDuration.textContent = formatTime(audio.duration);
+});
 
-setMusic(0);
+// Play the next song when the current one ends
+audio.addEventListener("ended", nextSong);
 
-//formatting time in min and seconds format
+// Format time function
 const formatTime = (time) => {
     let min = Math.floor(time / 60);
-    if (min < 10) {
-        min = `0${min}`;
-    }
     let sec = Math.floor(time % 60);
-    if (sec < 10) {  // Corrected from sec < 1 to sec < 10
-        sec = `0${sec}`;
-    }
+    if (sec < 10) sec = `0${sec}`;
     return `${min}:${sec}`;
 };
 
-
-setInterval(() => {
-    seekBar.value = music.currentTime;
-    currentTime.innerHTML = formatTime(music.currentTime);
-    if(Math.floor(music.currentTime) == Math.floor(seekBar.max)){
-        forwardBtn.click();
-    }
-}, 500)
-
-seekBar.addEventListener("change", () =>{
-    music.currentTime = seekBar.value;
-})
-
-const playMusic = () =>{
-    music.play();
-    playBtn.classList.remove("pause");
-    disk.classList.add("play");
-}
-
-//forward and back ward buttons function
-forwardBtn.addEventListener("click", () =>{
-    if(currentMusic >= songs.length -1){
-        currentMusic = 0;
-    }else{
-        currentMusic ++;
-    }
-    setMusic(currentMusic);
-    playMusic();
-})
-
-backwardBtn.addEventListener("click", () =>{
-    if(currentMusic <= 0){
-        currentMusic = songs.length -1;
-    }else{
-        currentMusic --;
-    }
-    setMusic(currentMusic);
-    playMusic();
-})*/
+// Initialize the first song
+loadSong(currentMusic);
 
