@@ -19,9 +19,10 @@ playBtn.addEventListener("click", () =>{
     
     playBtn.classList.toggle("pause");
     disk.classList.toggle("play");
+    
 })
 
-const setMusic = (i) => {
+/*const setMusic = (i) => {
     seekBar.value = 0;//set range slide value to 0
     let song = songs[i];
     currentMusic = i;
@@ -92,5 +93,5 @@ backwardBtn.addEventListener("click", () =>{
     }
     setMusic(currentMusic);
     playMusic();
-})
+})*/
 
